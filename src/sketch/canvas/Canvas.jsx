@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import p5 from "p5"
 
+import Square from "./../components/Square"
+
 let posX = 0
 
 export default function Canvas(props) {
@@ -18,6 +20,7 @@ export default function Canvas(props) {
             x: props.fullpage ? window.innerWidth : props.sizeX,
             y: props.fullpage ? window.innerHeight : props.sizeY
         }
+        let square = new Square(s, posX, 0, 100, 100)
 
         s.setup = () => {
              s.createCanvas(canvasSize.x, canvasSize.y)
@@ -27,8 +30,9 @@ export default function Canvas(props) {
                 s.translate(window.innerWidth / 2, window.innerHeight / 2)
 
             s.background(0)
+            s.noStroke()
             s.fill(255)
-            s.rect(posX, 0, 100, 100)
+            square.display(posX, 0)
         }
         s.windowResized = () => {
             if(props.fullpage)
@@ -41,6 +45,6 @@ export default function Canvas(props) {
     )
 }
 
-export function moveX(x) {
-    posX += x
+export function moveX(value_x) {
+    posX += value_x
 }

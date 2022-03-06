@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import Canvas, {moveX} from './sketch/canvas/Canvas'
+import moveShape from './sketch/functions/MoveShape'
+import Panel from './components/Panel'
 import Button from './components/Button'
 
 function App() {
 
   return (
     <div className="App">
-      <div className="container_ui">
+      <Panel>
         <Button
           text="Left"
           onClick={() => moveX(-10)}
@@ -15,12 +17,12 @@ function App() {
           text="Right"
           onClick={() => moveX(10)}
         />
-      </div>
+      </Panel>
       <Canvas
         sizeX={200}
         sizeY={200}
         fullpage={true}
-        centerMode={false}
+        centerMode={true}
       />
     </div>
   )
