@@ -1,20 +1,23 @@
 {
   "name": "p5js-react-template",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "p5": "^1.4.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "eslint-config-next": "13.4.12",
+    "leva": "^0.9.35",
+    "next": "13.4.12",
+    "p5": "^1.7.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^1.0.7",
-    "sass": "^1.49.9",
-    "vite": "^2.8.0"
+    "eslint": "^8.46.0",
+    "standard": "^17.1.0"
   }
 }
