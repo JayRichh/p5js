@@ -5,11 +5,11 @@ import pixel from "./shaders/pixel.frag"
 import pixelV from "./shaders/pixelV.frag"
 import posterize from "./shaders/posterize.frag"
 import ShaderManager from './shaderManager';
+import PostProcessor from './postProcessor';
 
 export const mainSketch = ({ canvasRef, settingsRef }) => (s) => {
 
-    let shaderManager;
-    let buffer1, buffer2
+    let shaderManager, postProcessor;
     const blurIterations = 21
     let coloramaTime = 0;
 
@@ -23,6 +23,7 @@ export const mainSketch = ({ canvasRef, settingsRef }) => (s) => {
       s.noSmooth()
 
         shaderManager = new ShaderManager(s)
+        postProcessor = new PostProcessor(s, shaderManager);
         shaderManager.loadShader('blurH', fragmentH);
         shaderManager.loadShader('blurV', fragmentV);
         shaderManager.loadShader('colorama', colorama);
@@ -30,47 +31,38 @@ export const mainSketch = ({ canvasRef, settingsRef }) => (s) => {
         shaderManager.loadShader('pixelV', pixelV);
         shaderManager.loadShader('posterize', posterize);
 
-        buffer1 = s.createFramebuffer()
-        buffer2 = s.createFramebuffer()
-
     }
 
     s.draw = () => {
-        buffer1.begin()
+      postProcessor.startDraw()
         s.background(0)
         s.rectMode(s.CENTER)
         s.ellipse(0, 0, s.frameCount%300)
-        buffer1.end()
+        postProcessor.endDraw()
 
         // POSTPROCESSING
         for (let i = 0; i < blurIterations; i++) {
-          shaderManager.applyShader('blurH', buffer1, buffer2, { texelSize: [1.0 / s.width, 0.0] });
-          [buffer1, buffer2] = [buffer2, buffer1];
+          postProcessor.applyShader('blurH', { texelSize: [1.0 / s.width, 0.0] });
           if (i < blurIterations - 1) {
-            shaderManager.applyShader('blurV', buffer1, buffer2, { texelSize: [0.0, 1.0 / s.height] });
-            [buffer1, buffer2] = [buffer2, buffer1];
+            postProcessor.applyShader('blurV', { texelSize: [0.0, 1.0 / s.height] });
           }
         }
 
         // COLORAMA
-        // shaderManager.applyShader('colorama', buffer1, buffer2, { time: coloramaTime, vColor1: [1.0, 1.0, 1.0], vColor2: [0.0, 0.0, 0.0], gradientLoops: 1 });
-        // [buffer1, buffer2] = [buffer2, buffer1];
-        // coloramaTime += 0.01;
+        postProcessor.applyShader('colorama', { time: coloramaTime, vColor1: [1.0, 1.0, 1.0], vColor2: [0.0, 0.0, 0.0], gradientLoops: 1 });
+        coloramaTime += 0.01;
 
         // PIXEL
-        // shaderManager.applyShader('pixel', buffer1, buffer2, {resolution: [s.width, s.height], pixelSize: 5});
-        // [buffer1, buffer2] = [buffer2, buffer1];
+        postProcessor.applyShader('pixel', {resolution: [s.width, s.height], pixelSize: 5});
         
         // POSTERIZE
-        shaderManager.applyShader('posterize', buffer1, buffer2, {levels: 2});
-        [buffer1, buffer2] = [buffer2, buffer1];
+        // postProcessor.applyShader('posterize', {levels: 3});
         
         // VERTICAL PIXEL
-        shaderManager.applyShader('pixelV', buffer1, buffer2, {resolution: s.height, divisions: settingsRef.current.Divisions});
-        [buffer1, buffer2] = [buffer2, buffer1];
+        postProcessor.applyShader('pixelV', {resolution: s.height, divisions: settingsRef.current.Divisions});
         
 
-        s.image(buffer1, -s.width / 2, -s.height / 2);
+        postProcessor.output()
         settingsRef.current.frameRateRef.current = s.frameRate()
     }
 }
