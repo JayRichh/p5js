@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import P5 from 'p5'
 import { mainSketch } from '../mainSketch'
 
-export default function Canvas({settings}) {
+export default function Canvas ({ settings }) {
   const canvasRef = useRef(null)
   const sketchRef = useRef(null)
   const settingsRef = useRef(settings)

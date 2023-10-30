@@ -1,13 +1,12 @@
-import { useLevaControls, SETTINGS } from './settings'
+import { useLevaControls } from './settings'
 import Canvas from './sketch/canvas/Canvas'
 
-function App() {
-
+function App () {
   const { data, frameRateRef } = useLevaControls()
 
   return (
     <>
-      <Canvas settings={{...data, frameRateRef}} />
+      <Canvas settings={{ ...data, frameRateRef }} />
     </>
   )
 }

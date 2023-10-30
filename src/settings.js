@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { useControls, folder, button, monitor } from 'leva'
+import { useControls, folder, monitor } from 'leva'
 
 export const SETTINGS = {
   MODE: ['Images', 'Typography'],
@@ -40,7 +40,7 @@ export function useLevaControls (props) {
       }),
       'Debug Zone': folder({
         framerateMonitor: monitor(frameRateRef, { graph: true, interval: 60 }),
-        framerate: monitor(frameRateRef, { graph: false, interval: 60 }),
+        framerate: monitor(frameRateRef, { graph: false, interval: 60 })
       })
     })
   }, [])
