@@ -1,5 +1,5 @@
-import fragmentH from './shaders/blurH.frag'
-import fragmentV from './shaders/blurV.frag'
+import blurH from './shaders/blurH.frag'
+import blurV from './shaders/blurV.frag'
 import colorama from './shaders/colorama.frag'
 import pixel from './shaders/pixel.frag'
 import pixelV from './shaders/pixelV.frag'
@@ -22,8 +22,8 @@ export const mainSketch = ({ canvasRef, settingsRef }) => (s) => {
 
     shaderManager = new ShaderManager(s)
     postProcessor = new PostProcessor(s, shaderManager)
-    shaderManager.loadShader('blurH', fragmentH)
-    shaderManager.loadShader('blurV', fragmentV)
+    shaderManager.loadShader('blurH', blurH)
+    shaderManager.loadShader('blurV', blurV)
     shaderManager.loadShader('colorama', colorama)
     shaderManager.loadShader('pixel', pixel)
     shaderManager.loadShader('pixelV', pixelV)
