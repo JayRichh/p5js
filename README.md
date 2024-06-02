@@ -1,23 +1,8 @@
+# React + Vite
 
-# P5js + React template
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Very simple template for building P5js sketches with the power of react.
-Useful for building custom design tools.
-## Dependencies
- - [React](https://reactjs.org)
- - [p5.js](https://p5js.org)
- - [Vite.js](https://vitejs.dev)
- - [Sass](https://sass-lang.com)
-## Installation
+Currently, two official plugins are available:
 
-Install the dependencies with npm:
-
-```bash
-  npm install
-```
-
-Run a development environment on a local server:
-
-```bash
-  npm run dev
-```
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh

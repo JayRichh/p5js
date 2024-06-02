@@ -1,50 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react'
-import p5 from "p5"
+import { useEffect, useRef } from 'react'
+import P5 from 'p5'
+import { mainSketch } from '../mainSketch'
 
-import Square from "./../components/Square"
+export default function Canvas ({ settings }) {
+  const canvasRef = useRef(null)
+  const sketchRef = useRef(null)
+  const settingsRef = useRef(settings)
 
-let posX = 0
+  useEffect(() => {
+    settingsRef.current = settings
 
-export default function Canvas(props) {
-
-    const renderTarget = useRef()
-
-    useEffect(() => {
-        let sketchInstance = new p5(sketch, renderTarget.current)
-        return () => sketchInstance.remove()
-    }, [props])
-
-    const sketch = (s) => {
-
-        let canvasSize = {
-            x: props.fullpage ? window.innerWidth : props.sizeX,
-            y: props.fullpage ? window.innerHeight : props.sizeY
-        }
-        let square = new Square(s, posX, 0, 100, 100)
-
-        s.setup = () => {
-             s.createCanvas(canvasSize.x, canvasSize.y)
-        }
-        s.draw = () => {
-            if(props.centerMode)
-                s.translate(window.innerWidth / 2, window.innerHeight / 2)
-
-            s.background(0)
-            s.noStroke()
-            s.fill(255)
-            square.display(posX, 0)
-        }
-        s.windowResized = () => {
-            if(props.fullpage)
-                s.resizeCanvas(window.innerWidth, window.innerHeight)
-        }
+    if (sketchRef.current) {
+      sketchRef.current.remove()
     }
+    const sketch = mainSketch({ canvasRef, settingsRef })
+    sketchRef.current = new P5(sketch)
 
-    return (
-        <div className="canvas" ref={renderTarget}></div>
-    )
-}
+    return () => {
+      if (sketchRef.current) sketchRef.current.remove()
+    }
+  }, [])
 
-export function moveX(value_x) {
-    posX += value_x
+  useEffect(() => {
+    settingsRef.current = settings
+  }, [settings])
+
+  return (
+    <div ref={canvasRef} />
+  )
 }
